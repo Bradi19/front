@@ -161,7 +161,20 @@ export const TRANSLATIONS_UA = {
   subscribe: {
     title: "Підписка на новини",
     description: "Тут Ви даєте згоду на розсилку новин на Вашу електронну пошту.",
-    button: "Підписатись"
+    button: "Підписатись",
+    youemail:'Ваша електронна пошта',
+    location: {
+      title: 'Місце положення',
+      description: 'Місце положення нашого офісу',
+      addresTitle: '',
+      adress: '',
+      phoneTitle: '',
+      phone: '',
+      emailTitle: '',
+      email: '',
+      websiteTitle: '',
+      website: '',
+    }
   }
 };
 

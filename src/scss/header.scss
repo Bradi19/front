@@ -1,4 +1,27 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+html {
+  max-width: 1920px;
+
+  @media screen and (max-width: 320px) {
+    max-width: 320px;
+  }
+  @media screen and (max-width: 380px) {
+    max-width: 320px;
+  }
+  @media screen and (max-width: 415px) {
+    max-width: 320px;
+  }
+  @media screen and (max-width: 475px) {
+    max-width: 320px;
+  }
+}
+.blocksection {
+  @media screen and (max-width: 475px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
 .hero-section .hero-text span {
   display: block;
   transform: translateX(-20em);
@@ -406,14 +429,20 @@ html {
     color: rgb(255, 255, 255);
     transition: all 0.2s linear;
 
-    &:hover{
+    &:hover {
       background-color: #fff;
       border: 1px solid #ee8425;
       transition: all 0.2s linear;
     }
   }
 }
-
+.memeber-List {
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 100%;
+}
 input[type="range"] {
   overflow: hidden;
   -webkit-appearance: none;

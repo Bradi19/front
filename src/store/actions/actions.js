@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT, PROJECTS_DATA, PROJECT_DATA, SUCCESS_DATA } from "./types";
+import { INCREMENT, DECREMENT, PROJECTS_DATA, PROJECT_DATA, SUCCESS_DATA, NEWS_DATA } from "./types";
 import { API } from "../../config/config";
 import axios from "axios";
 var SHA256 = require("crypto-js/sha256");
@@ -37,6 +37,24 @@ export const projects = () => {
     dispatch({
       type: PROJECTS_DATA,
       projects: projects,
+    });
+  };
+};
+export const news = () => {
+  let news;
+  return async (dispatch) => {
+    await axios
+      .get(API + "/news", {
+        headers: {
+          "X-HASH": SHA256("portfolio.ua"),
+        },
+      })
+      .then((res) => {
+        news = res.data;
+      });
+    dispatch({
+      type: NEWS_DATA,
+      news: news,
     });
   };
 };

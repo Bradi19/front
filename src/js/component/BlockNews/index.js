@@ -106,6 +106,7 @@ const BlockNews = (props) => {
             </div>
           </div>
         </div>
+        <div className="memeber-List">
         {props.projects.map((e) => {
           return (
             <div
@@ -132,6 +133,7 @@ const BlockNews = (props) => {
             </div>
           );
         })}
+        </div>
       </section>
     </>
   );

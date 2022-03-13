@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-import { reducer, projects } from '../store'
+import { reducer, projects, news } from '../store'
 
 export const rootReducer = combineReducers({
     like: reducer,
-    projects: projects
+    projects: projects,
+    news: news,
 })

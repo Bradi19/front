@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-const BlockSubscrib = (props) => {
+const Blocksubscribe = (props) => {
+
     const {t} = useTranslation();
     return (
         <>
@@ -14,7 +15,7 @@ const BlockSubscrib = (props) => {
               <p>{t('subscribe.description')}</p>
             </div>
             <form action="#" className="ni-form">
-              <input type="text" placeholder="Your email" />
+              <input type="text" placeholder={t('subscribe.youemail')} />
               <button type="submit">{t('subscribe.button')}</button>
             </form>
           </div>
@@ -25,29 +26,29 @@ const BlockSubscrib = (props) => {
           <div className="row">
             <div className="col-lg-6">
               <div className="section-title">
-                <h2>Location</h2>
-                <p>Get directions to our event center</p>
+                <h2>{t('subscribe.location.title')}</h2>
+                <p>{t('subscribe.location.description')}</p>
               </div>
               <div className="cs-text">
                 <div className="ct-address">
-                  <span>Address:</span>
+                  <span>{t('subscribe.location.addresTitle')}</span>
                   <p>
-                    01 Pascale Springs Apt. 339, NY City <br />
-                    United State
+                  {t('subscribe.location.adress')}
                   </p>
                 </div>
                 <ul>
                   <li>
-                    <span>Phone:</span>
-                    (+12)-345-67-8910
+                    <span>{t('subscribe.location.phoneTitle')}</span>
+                    {t('subscribe.location.phone')}
                   </li>
                   <li>
-                    <span>Email:</span>
-                    info.colorlib@gmail.com
+                    <span>{t('subscribe.location.emailTitle')}</span>
+                    {t('subscribe.location.email')}
                   </li>
                 </ul>
                 <div className="ct-links">
-                  <span>Website:</span>
+                  <span>{t('subscribe.location.websiteTitle')}</span>
+                  {t('subscribe.location.website')}
                 </div>
               </div>
             </div>
@@ -66,4 +67,4 @@ const BlockSubscrib = (props) => {
       </>
     )
 }
-export default BlockSubscrib
+export default Blocksubscribe

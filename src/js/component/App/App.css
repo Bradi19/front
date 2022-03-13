@@ -34,6 +34,7 @@
 
 html,
 body {
+	width: auto;
 	height: 100%;
 	font-family: "Work Sans", sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -555,8 +556,7 @@ ol {
 }
 
 .member-item {
-	max-width: 100%;
-	float: left;
+	max-width: 450px;
 	max-height: 200px;
 	position: relative;
 	overflow: hidden;

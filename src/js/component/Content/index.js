@@ -76,6 +76,7 @@ const Content = (props) => {
   useEffect(() => {
     props.pageActions.loads();
     props.pageActions.projects();
+    props.pageActions.news();
     window.addEventListener("scroll", function () {
       Visible(item.current);
     });
@@ -143,7 +144,7 @@ const Content = (props) => {
   };
 
   return (
-    <>
+    <div className="blocksection">
       <section className="hero-section set-bg" data-setbg={images.Hero}>
         <div className="container">
           <div className="row">
@@ -241,7 +242,7 @@ const Content = (props) => {
       <Suspense fallback="<div class='loader'></div>">
         <BlockSubscrib images={images} />
       </Suspense>
-    </>
+    </div>
   );
 };
 
@@ -249,6 +250,7 @@ const mapStateToProps = (state) => {
   return {
     data: state.like.data,
     projects: state.projects.projects,
+    news: state.news.news,
     status: state.status,
   };
 };
