@@ -1,54 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-const Blocksubscribe = (props) => {
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+  GoogleReCaptcha,
+} from "react-google-recaptcha-v3";
+import Modal from "../Modal";
 
-    const {t} = useTranslation();
-    return (
-        <>
-        <section className="newslatter-section">
+const Blocksubscribe = (props) => {
+  const { t } = useTranslation();
+  const [isErrorEmail, setIsErrorEmail] = useState(false);
+  const [token, setToken] = useState();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const onSubmitSend = (e, form) => {
+    e.preventDefault();
+    console.log(e);
+    let value = e.target[2].value,
+      email = e.target[1].value;
+    if (email.indexOf(".") === -1) {
+      setIsErrorEmail(true);
+      setErrorMessage(t("forms.formPlan.errorEmail"));
+      return;
+    }
+    if (!isErrorEmail) {
+      setErrorMessage();
+      let data = new FormData(e.target);
+      data.append("_token", "");
+      data.append("token", token);
+      data.append("subscribed", true);
+      data = props.send(data);
+      return;
+    }
+  };
+  return (
+    <>
+      <section className="newslatter-section">
         <div className="container">
-          <div
-            className="newslatter-inner set-bg"
-          >
+          <div className="newslatter-inner set-bg">
             <div className="ni-text">
-              <h3>{t('subscribe.title')}</h3>
-              <p>{t('subscribe.description')}</p>
+              <h3>{t("subscribe.title")}</h3>
+              <p>{t("subscribe.description")}</p>
             </div>
-            <form action="#" className="ni-form">
-              <input type="text" placeholder={t('subscribe.youemail')} />
-              <button type="submit">{t('subscribe.button')}</button>
+            <form onSubmit={(e) => onSubmitSend(e, this)} className="ni-form">
+              <input type="email" placeholder={t("subscribe.youemail")} />
+              <GoogleReCaptchaProvider
+                reCaptchaKey="6LdZ5cceAAAAANlRyAE5m-6KQ6rfdmZqBGIqei2t"
+                scriptProps={{
+                  async: true, // optional, default to false,
+                  defer: true, // optional, default to false
+                  appendTo: "body", // optional, default to "head", can be "head" or "body",
+                  nonce: undefined, // optional, default undefined
+                }}
+              >
+                <GoogleReCaptcha onVerify={(t) => setToken(t)} />
+              </GoogleReCaptchaProvider>
+              <button type="submit">{t("subscribe.button")}</button>
             </form>
           </div>
         </div>
       </section>
-        <section className="contact-section spad">
+      <section className="contact-section spad">
         <div className="container">
           <div className="row">
             <div className="col-lg-6">
               <div className="section-title">
-                <h2>{t('subscribe.location.title')}</h2>
-                <p>{t('subscribe.location.description')}</p>
+                <h2>{t("subscribe.location.title")}</h2>
+                <p>{t("subscribe.location.description")}</p>
               </div>
               <div className="cs-text">
                 <div className="ct-address">
-                  <span>{t('subscribe.location.addresTitle')}</span>
-                  <p>
-                  {t('subscribe.location.adress')}
-                  </p>
+                  <span>{t("subscribe.location.addresTitle")}</span>
+                  <p>{t("subscribe.location.adress")}</p>
                 </div>
                 <ul>
                   <li>
-                    <span>{t('subscribe.location.phoneTitle')}</span>
-                    {t('subscribe.location.phone')}
+                    <span>{t("subscribe.location.phoneTitle")}</span>
+                    {t("subscribe.location.phone")}
                   </li>
                   <li>
-                    <span>{t('subscribe.location.emailTitle')}</span>
-                    {t('subscribe.location.email')}
+                    <span>{t("subscribe.location.emailTitle")}</span>
+                    {t("subscribe.location.email")}
                   </li>
                 </ul>
                 <div className="ct-links">
-                  <span>{t('subscribe.location.websiteTitle')}</span>
-                  {t('subscribe.location.website')}
+                  <span>{t("subscribe.location.websiteTitle")}</span>
+                  {t("subscribe.location.website")}
                 </div>
               </div>
             </div>
@@ -64,7 +101,15 @@ const Blocksubscribe = (props) => {
           </div>
         </div>
       </section>
-      </>
-    )
-}
-export default Blocksubscribe
+
+      <Modal
+        dataLwo={props.dataLwo}
+        form="info"
+        active={props.active}
+        closer={(e) => props.closer(e)}
+        send={(data) => props.send(data)}
+      />
+    </>
+  );
+};
+export default Blocksubscribe;

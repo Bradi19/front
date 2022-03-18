@@ -10,11 +10,16 @@ const Block = () => {
     secondMin();
   }, []);
   const secondMin = () => {
-    const deadline = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDay() + 1,
-    );
+    let start = 8,
+      end = 20,
+      today = new Date(),
+      result = Math.ceil(end - today.getHours());
+    if (result <= 0 || result > 12){
+      start = today.getHours()
+    }else{
+      start =Math.ceil(today.getHours()+result);
+    }
+    const deadline = new Date(today.getFullYear(),today.getMonth(),today.getDate(), start);
     // id таймера
     let timerId = null;
     // склонение числительных
@@ -44,24 +49,24 @@ const Block = () => {
         seconds < 10 ? "0" + seconds : seconds
       }</span>`;
       $days.innerHTML += `<p>${declensionNum(days, [
-        t('timers.day0'),
-        t('timers.day1'),
-        t('timers.day2'),
+        t("timers.day0"),
+        t("timers.day1"),
+        t("timers.day2"),
       ])}</p>`;
       $hours.innerHTML += `<p>${declensionNum(hours, [
-        t('timers.time0'),
-        t('timers.time1'),
-        t('timers.time2'),
+        t("timers.time0"),
+        t("timers.time1"),
+        t("timers.time2"),
       ])}</p>`;
       $minutes.innerHTML += `<p>${declensionNum(minutes, [
-        t('timers.min0'),
-        t('timers.min1'),
-        t('timers.min2'),
+        t("timers.min0"),
+        t("timers.min1"),
+        t("timers.min2"),
       ])}</p>`;
       $seconds.innerHTML += `<p>${declensionNum(seconds, [
-        t('timers.sec0'),
-        t('timers.sec1'),
-        t('timers.sec2'),
+        t("timers.sec0"),
+        t("timers.sec1"),
+        t("timers.sec2"),
       ])}</p>`;
     };
     // получаем элементы, содержащие компоненты даты
@@ -92,10 +97,8 @@ const Block = () => {
         <div className="row">
           <div className="col-lg-4">
             <div className="counter-text">
-              <span>{t('timers.title')}</span>
-              <h3>
-              {t('timers.description')}
-              </h3>
+              <span>{t("timers.title")}</span>
+              <h3>{t("timers.description")}</h3>
             </div>
           </div>
           {timout()}

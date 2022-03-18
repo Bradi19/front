@@ -1,9 +1,16 @@
-import { INCREMENT, NEWS_DATA, PROJECTS_DATA, PROJECT_DATA } from "./actions/types";
+import {
+  INCREMENT,
+  NEWS_DATA,
+  PROJECTS_DATA,
+  PROJECT_DATA,
+  SUCCESS_USERINFO,
+} from "./actions/types";
 const initialState = {
   data: [],
   projects: [],
   project: [],
   news: [],
+  infoUser: [],
 };
 
 export const reducer = (state = initialState, action) => {
@@ -13,29 +20,16 @@ export const reducer = (state = initialState, action) => {
         ...state,
         data: action.data,
       };
-    default:
-      return {
-        ...state,
-      };
-  }
-  return state;
-};
-export const news = (state = initialState, action) => {
-  switch (action.type) {
     case NEWS_DATA:
       return {
         ...state,
         news: action.news,
       };
-    default:
+    case SUCCESS_USERINFO:
       return {
         ...state,
+        infoUser: action.infoUser,
       };
-  }
-  return state;
-};
-export const projects = (state = initialState, action) => {
-  switch (action.type) {
     case PROJECTS_DATA:
       return {
         ...state,

@@ -14,6 +14,6 @@ RUN npm ci -q
 
 # add app
 COPY . ./
-
+EXPOSE 8000
 # start app
 CMD ["npm", "start"]

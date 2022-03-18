@@ -15,8 +15,8 @@ export const TRANSLATIONS_UA = {
       "Опис проектів над якими працював.\n Всі проекти без доданого посилання, є код для ознакомлення.",
   },
   timers: {
-    title: "До обновлення новини",
-    description: "",
+    title: "Час вказаний на табло вимірює присутність Адміністрації сайту. \nДля зв'язку з розробником внизу є таблиця ",
+    description: "До закінчення робочого дня!",
     day0: "день",
     day1: "дня",
     day2: "днів",
@@ -49,12 +49,13 @@ export const TRANSLATIONS_UA = {
   header: {
     title: "",
     menu: {
-      home: "Головная",
+      home: "Головна",
       about: "Про нас",
       speakers: "Компьютерні колонки",
       schedule: "Розклад",
       blog: "Блог",
       contacts: "Контакти",
+      button: "Замовити сайт"
     },
   },
   worksheet: {
@@ -175,6 +176,15 @@ export const TRANSLATIONS_UA = {
       websiteTitle: '',
       website: '',
     }
+  },
+  chat: {
+    title: "Чатик",
+    description: "Чат для спілкування",
+    errorTextarea: "Посилання не доступні в чаті",
+    errorTooLongTextarea: "Дуже довге повідомлення",
+    send: 'Відправити',
+    placeholder: "Введіть текст ...",
+    login: "Введіть логін для входу"
   }
 };
 

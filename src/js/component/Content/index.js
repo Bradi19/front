@@ -7,14 +7,14 @@ import React, {
   Suspense,
 } from "react";
 import { images } from "../../context/Images/content";
-import { connect, useDispatch, useSelector } from "react-redux";
-import * as pageActions from "../../../store/actions/actions";
-import { bindActionCreators } from "redux";
+
 import { useTranslation } from "react-i18next";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import imagess from "./images";
 import Block from "../Block";
 import Modal from "../Modal";
+import Loader from "../Loader";
+import Chat from "../Chat";
 const BlockNews = React.lazy(() => import("../BlockNews"));
 const BlockNext = React.lazy(() => import("../BlockNext"));
 const BlockAbout = React.lazy(() => import("../BlockAbout"));
@@ -30,6 +30,7 @@ const Content = (props) => {
   const [dataLwo, setDataLwo] = useState("");
   const [timerStop, setTimerStop] = useState(() => {});
   const item = useRef();
+
   const Visible = function (target) {
     // Все позиции элемента
     let targetPosition = {
@@ -60,23 +61,30 @@ const Content = (props) => {
 
   const changeShow = (item, activate) => {
     item.preventDefault();
+    document.querySelector("html").style.overflow = "hidden";
+
     setActive(activate);
   };
   const closeModal = (e) => {
     setActive(e);
+    document.querySelector("html").style.overflow = "auto";
   };
   const sendMassege = (data) => {
+    setDataLwo(true);
+
     props.pageActions.sendForm(data).then((e) => {
       setDataLwo(e);
+      if (e.status.success) {
+        setActive(false);
+        setDataLwo(false);
+
+        document.querySelector("form.needs-validation").reset();
+      }
+      document.querySelector("html").style.overflow = "auto";
     });
-    if (dataLwo.status.success) {
-      setActive(false);
-    }
   };
   useEffect(() => {
-    props.pageActions.loads();
-    props.pageActions.projects();
-    props.pageActions.news();
+
     window.addEventListener("scroll", function () {
       Visible(item.current);
     });
@@ -142,7 +150,6 @@ const Content = (props) => {
       }, 1500)
     );
   };
-
   return (
     <div className="blocksection">
       <section className="hero-section set-bg" data-setbg={images.Hero}>
@@ -152,7 +159,7 @@ const Content = (props) => {
               <div ref={item} className="hero-text">
                 <span>{props.data.data ? t(props.data.data[0].body) : ""}</span>
                 <h2></h2>
-                <a href="#" className="primary-btn">
+                <a href="#portfolio" className="primary-btn">
                   {props.data.data ? t(props.data.data[0].title) : ""}
                 </a>
               </div>
@@ -183,7 +190,7 @@ const Content = (props) => {
                     {Object.entries(imagess).map((e, i) => {
                       return (
                         <div
-                          key={e}
+                          key={i}
                           className="slide"
                           onClick={(ed) => stopSlider(ed)}
                         >
@@ -199,8 +206,9 @@ const Content = (props) => {
           </div>
         </div>
       </section>
+      {props.projects.data && (<Chat infoUser={props.infoUser} takeIp={() => props.pageActions.takeIp()} />)}
       <Block props={props} />
-      <Suspense fallback="<div class='loader'></div>">
+      <Suspense fallback={<Loader />}>
         {props.projects.data && (
           <BlockNews
             images={images}
@@ -210,10 +218,10 @@ const Content = (props) => {
           />
         )}
       </Suspense>
-      <Suspense fallback="<div class='loader'></div>">
+      <Suspense fallback={<Loader />}>
         <BlockNext images={images} />
       </Suspense>
-      <Suspense fallback="<div class='loader'></div>">
+      <Suspense fallback={<Loader />}>
         <BlockAbout
           images={images}
           active={(item, activate) => changeShow(item, activate)}
@@ -229,6 +237,7 @@ const Content = (props) => {
         }}
       >
         <Modal
+          dataLwo={dataLwo}
           active={active}
           closer={(e) => closeModal(e)}
           send={(data) => sendMassege(data)}
@@ -236,27 +245,20 @@ const Content = (props) => {
         />
       </GoogleReCaptchaProvider>
 
-      <Suspense fallback="<div class='loader'></div>">
-        <BlockIKnow images={images} />
+      <Suspense fallback={<Loader />}>
+        <BlockIKnow images={images} data={props.news.data} />
       </Suspense>
-      <Suspense fallback="<div class='loader'></div>">
-        <BlockSubscrib images={images} />
+      <Suspense fallback={<Loader />}>
+        <BlockSubscrib
+          images={images}
+          send={(data) => sendMassege(data)}
+          active={active}
+          closer={(e) => closeModal(e)}
+          dataLwo={dataLwo}
+        />
       </Suspense>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.like.data,
-    projects: state.projects.projects,
-    news: state.news.news,
-    status: state.status,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    pageActions: bindActionCreators(pageActions, dispatch),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default Content;

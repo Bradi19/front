@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT, PROJECTS_DATA, PROJECT_DATA, SUCCESS_DATA, NEWS_DATA } from "./types";
+import { INCREMENT, DECREMENT, PROJECTS_DATA, PROJECT_DATA, SUCCESS_DATA, NEWS_DATA,SUCCESS_USERINFO } from "./types";
 import { API } from "../../config/config";
 import axios from "axios";
 var SHA256 = require("crypto-js/sha256");
@@ -102,3 +102,17 @@ export const sendForm = (data) => {
     });
   };
 };
+export const takeIp = () => {
+  let user;
+  return async (dispatch) => {
+    await axios
+      .get("https://ipapi.co/json/")
+      .then((res) => {
+        user = res.data
+      });
+        dispatch({
+          type: SUCCESS_USERINFO,
+          infoUser: user,
+        });
+  };
+}

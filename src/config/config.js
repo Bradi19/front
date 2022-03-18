@@ -1,3 +1,3 @@
-export const API = 'http://localhost:8003/api';
-export const URL = 'http://localhost:8003';
-export const API_BANNER = 'http://localhost:8003/api/banner';
+export const API = 'http://server.dev.local/api';
+export const URL = 'http://server.dev.local';
+export const API_BANNER = 'http://server.dev.local/api/banner';

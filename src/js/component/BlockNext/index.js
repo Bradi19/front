@@ -34,7 +34,7 @@ const BlockNext = (props) => {
     e.target.classList.add("active");
   };
   return (
-    <section className="schedule-section spad">
+    <section className="schedule-section spad" id="shedule">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">

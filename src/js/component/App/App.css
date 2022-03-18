@@ -96,7 +96,9 @@ button:focus,
 textarea:focus {
 	outline: none;
 }
-
+a{
+	text-decoration: none;
+}
 a:hover,
 a:focus {
 	text-decoration: none;
@@ -186,6 +188,7 @@ ol {
 	color: #ffffff;
 	text-align: center;
 	border-radius: 50px;
+	height: 100%;
 	background-image: -webkit-gradient(linear, left top, right top, from(#ee8425), to(#f9488b)), -webkit-gradient(linear, left top, right top, from(#ee8425), to(#f9488b));
 	background-image: -o-linear-gradient(left, #ee8425 0%, #f9488b 100%), -o-linear-gradient(left, #ee8425 0%, #f9488b 100%);
 	background-image: linear-gradient(to right, #ee8425 0%, #f9488b 100%), linear-gradient(to right, #ee8425 0%, #f9488b 100%);
@@ -289,7 +292,8 @@ ol {
 }
 
 .nav-menu {
-	float: right;
+	display: flex;
+    justify-content: space-evenly;
 }
 
 .nav-menu .mainmenu {
@@ -299,7 +303,7 @@ ol {
 .nav-menu .mainmenu ul li {
 	display: inline-block;
 	list-style: none;
-	margin-right: 40px;
+	margin-right: 25px;
 	position: relative;
 }
 
@@ -363,6 +367,7 @@ ol {
 	padding: 42px 0;
 	position: relative;
 	display: inline-block;
+	text-decoration: none;
 }
 
 .nav-menu .mainmenu ul li a:after {
@@ -381,8 +386,14 @@ ol {
 
 .nav-menu .primary-btn.top-btn {
 	margin: 27px 0;
+	text-decoration: none;
+	color: rgb(255, 255, 255);
 }
-
+.nav-menu .primary-btn.top-btn:hover {
+	background-image: none;
+	border: 1px solid #ef8229;
+	color: rgb(31, 31, 31);
+}
 .slicknav_menu {
 	display: none;
 }
@@ -392,7 +403,7 @@ ol {
 -----------------------*/
 
 .hero-section {
-	padding-top: 55px;
+	padding-top: 0px;
 }
 
 .hero-section .hero-text {
@@ -463,6 +474,7 @@ ol {
 
 .counter-section .cd-timer .cd-item:first-child {
 	margin-left: 0;
+	visibility: hidden;
 }
 
 .counter-section .cd-timer .cd-item span {
