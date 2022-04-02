@@ -69,7 +69,7 @@ const FormOrder = (props) => {
       setErrorMessage(t("forms.formPlan.errorEmail"));
       return;
     }
-    if (
+    if (props.active &&
       !isErrorLink &&
       !isErrorRange &&
       !isErrorEmail &&

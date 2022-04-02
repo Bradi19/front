@@ -6,7 +6,6 @@ import App from "./js/component/App";
 import reportWebVitals from "./reportWebVitals";
 import "./i18nextConf";
 import configureStore from "./store/configureStore";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const store = configureStore();
 ReactDOM.render(

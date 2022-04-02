@@ -1,18 +1,31 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable default-case */
 import { t } from "i18next";
-import React, { useEffect, useState } from "react";
+import "emoji-mart/css/emoji-mart.css";
+import React, { useEffect, useState, useRef } from "react";
+import { Emoji, Picker } from "emoji-mart";
 import sender from "../../../img/send.svg";
 const dataDomain = require("../../context/tld-list-basic.json");
 const Chat = (props) => {
   let ws = null;
   const [uname, setUname] = useState("");
   const [user, setUser] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [uidName, setUidName] = useState(localStorage.getItem("uuid"));
+  const [isErrorName, setIsErrorName] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+  const nitty = useRef();
+  const left = useRef();
+  const chat = useRef();
   useEffect(() => {
     props.takeIp();
-    return () => {};
-    // ws = connect();
+    setUname(localStorage.getItem("uuid"));
+    if (uidName) {
+      ws = connect();
+    }
   }, []);
   const connect = () => {
-    // Создание подключения к веб-сокету  ws://ip:Номер порта
     ws = new WebSocket("ws://127.0.0.1:3000");
 
     ws.onopen = onopen;
@@ -23,16 +36,21 @@ const Chat = (props) => {
   };
   const onopen = () => {
     var data = "Системное сообщение: соединение установлено успешно";
+    console.log(data);
   };
   const onmessage = (e) => {
     var data = JSON.parse(e.data),
-      uname = "",
       headerimg = "";
-
+    if (ws === null) {
+      ws = connect();
+    }
     switch (data.type) {
       case "handShake":
-        // Первый вход, отправка данных для входа
-        var user_info = { type: "login", msg: uname, headerimg: headerimg };
+        var user_info = {
+          type: "login",
+          msg: uname ? uname : localStorage.getItem("uuid"),
+          headerimg: headerimg,
+        };
         sendMsg(user_info);
         break;
       case "login":
@@ -75,14 +93,44 @@ const Chat = (props) => {
     });
     return f;
   };
+
+  const send = (e) => {
+    var msg = document.querySelector("textarea#input-value").value;
+    document.querySelector("textarea#input-value").value = "";
+
+    var reg = new RegExp("\r\n", "g"),
+      tooltip = document.querySelector(".textarea-tooltip"),
+      links = document.querySelectorAll(".write>a");
+    if (checkDomain(msg) >= 0) {
+      tooltip.classList.add("error");
+      tooltip.innerHTML = "<span>" + t("chat.errorTextarea") + "</span>";
+      links.forEach((link) => {
+        link.classList.add("disabled-link");
+      });
+      return;
+    } else if (msg.length <= 2) {
+      tooltip.classList.add("error");
+      tooltip.innerHTML = "<span>" + t("chat.errorTextareaLength") + "</span>";
+      links.forEach((link) => {
+        link.classList.add("disabled-link");
+      });
+      return;
+    }
+    msg = msg.replace(reg, "");
+    sendMsg({ type: "user", msg: msg });
+    document.querySelector("textarea#input-value").value = "";
+    document.querySelector("textarea#input-value").innerHTML = "";
+  };
   const confirm = (event) => {
     var key_num = event.keyCode,
-      value = event.target.value,
+      value = document.querySelector("textarea#input-value").value,
+      // value = event.target.value,
       tooltip = document.querySelector(".textarea-tooltip"),
       links = document.querySelectorAll(".write>a"),
       regex = new RegExp(
         /[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{1,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?/gi
       );
+    // event.target.value = val;
     if (event.target.scrollHeight <= 90) {
       setTimeout(function () {
         event.target.style.cssText =
@@ -118,41 +166,23 @@ const Chat = (props) => {
       });
       tooltip.innerHTML = "";
     }
+    if (ws === null) {
+      ws = connect();
+    }
     if (13 == key_num) {
       send();
     } else {
       return false;
     }
   };
-
-  // отправляем данные
-  const send = (e) => {
-    e.preventDefault();
-    var msg = document.querySelector("textarea#input-value").value;
-    var reg = new RegExp("\r\n", "g"),
-      tooltip = document.querySelector(".textarea-tooltip"),
-      links = document.querySelectorAll(".write>a");
-    if (checkDomain(msg) >= 0) {
-      tooltip.classList.add("error");
-      tooltip.innerHTML = "<span>" + t("chat.errorTextarea") + "</span>";
-      links.forEach((link) => {
-        link.classList.add("disabled-link");
-      });
-      return;
-    }
-    msg = msg.replace(reg, "");
-    sendMsg({ type: "user", msg: msg });
-    document.querySelector("textarea#input-value").value = "";
-  };
-
-  // отправляем данные
   const sendMsg = (msg) => {
     var data = JSON.stringify(msg);
+    console.log(data);
     if (ws === null) {
       ws = connect();
-    } else {
-      ws.send(data);
     }
+    ws.send(data);
+    document.querySelector("textarea#input-value").value = "";
   };
 
   // Дополнительные данные, системные сообщения онлайн и офлайн
@@ -165,7 +195,7 @@ const Chat = (props) => {
                </div>`;
     var active_chat = document.querySelector("div.active-chat");
     var oldHtml = active_chat.innerHTML;
-    active_chat.innerHTML = oldHtml + html;
+    active_chat.innerHTML = html;
     active_chat.scrollTop = active_chat.scrollHeight;
   };
 
@@ -179,7 +209,7 @@ const Chat = (props) => {
         user[i].headerimg +
         `" alt=""/>
                <span class="name">` +
-        user[i].username +
+        localStorage.getItem("name") +
         `</span>
                <span class="time">` +
         user[i].login_time +
@@ -208,12 +238,12 @@ const Chat = (props) => {
       // Список сообщений, отправленных другими
       var html =
         `<div class="message">
-                   <img src="` +
-        data.headerimg +
-        `" alt=""/>
+                
                    <div class="bubble you">` +
         data.msg +
-        `</div>
+        `</div>   <img src="` +
+        data.headerimg +
+        `" alt=""/>
                    </div>`;
     }
     var active_chat = document.querySelector("div.active-chat");
@@ -247,26 +277,96 @@ const Chat = (props) => {
     }
     return uuid.join("");
   };
+  const openChat = () => {
+    if (isOpen) {
+      chat.current.style.display = "flex";
+      left.current.classList.add("active");
+      nitty.current.classList.add("active");
+      chat.current.classList.add("active");
+      setIsOpen(false);
+      return;
+    }
+    setIsOpen(true);
+    chat.current.style.display = "none";
+
+    left.current.classList.toggle("active", isOpen);
+    nitty.current.classList.toggle("active", isOpen);
+    chat.current.classList.toggle("active", isOpen);
+  };
+  const handleEmojiSelect = (e) => {
+    let old_val = document.querySelector("textarea#input-value").value;
+    document.querySelector("textarea#input-value").value = old_val + e.native;
+
+    setShowEmoji(false);
+    console.log(e.native);
+  };
+  const onChangeLink = (e) => {
+    e.preventDefault();
+    let input = e.target.querySelector('input[name="login"]'),
+      store = localStorage,
+      regexp = new RegExp(/[^\w\s]/gi);
+    if (input.value === "") {
+      setIsErrorName(true);
+      return;
+    }
+    if (!localStorage.getItem("uuid")) {
+      localStorage.setItem(
+        "uuid",
+        uuid() + ":" + input.value.replace(regexp, "")
+      );
+      localStorage.setItem("name", input.value.replace(regexp, ""));
+    }
+    setUidName(localStorage.getItem("uuid"));
+    connect();
+    left.current.querySelector(".signIn").classList.add("hidden");
+    left.current.querySelector(".chat").classList.remove("hidden");
+  };
+  const onClickEmoji = (e) => {
+    setShowEmoji(true);
+  };
+  const onFocuser = (e) => {
+    let val = document.querySelector("textarea#input-value").value;
+
+    return (e.target.value = val);
+  };
   return (
     <>
-      <div className="left">
-        <div className="top" onClick={() => onClick()}>
+      <div className="nity" ref={nitty}></div>
+      <div className="left" ref={left} onClick={(e) => openChat(e)}>
+        <div className="top" onClick={() => openChat()}>
           <div className="">
-            Люди в сети: <span id="numbers"> 0 </span> человек
+            {t("chat.peopleIn")} <span id="numbers"> 0 </span>
+            {t("chat.person")}
           </div>
         </div>
       </div>
-      <div className="wrapper-chat ">
-        <div className="signIn">
-          <div className="input">
-            <label>{t("chat.login")} </label>
-            <input type="text" className="form-control" name="login" value="" />
-          </div>
-          <button className="form-control" name="login" value="">
-            {t("chat.send")}
-          </button>
+      <div className="wrapper-chat" ref={chat}>
+        <div className={uidName ? "signIn hidden" : "signIn"}>
+          <form className="opens" onSubmit={(e) => onChangeLink(e)}>
+            <div className="infas">
+              <div
+                className={
+                  isErrorName ? "invalid text-danger" : "invalid-feedback"
+                }
+              >
+                {t("chat.errorName")}
+              </div>
+              <label htmlFor="loginser">{t("chat.login")} </label>
+              <input
+                type="text"
+                className="form-control"
+                id="loginser"
+                name="login"
+                maxLength="30"
+                defaultValue=""
+              />
+            </div>
+            <div className="col-12">
+              <button className="btn btn-info">{t("chat.send")}</button>
+            </div>
+          </form>
         </div>
-        <div className="container chat">
+        <div className={uidName ? "container chat" : "container chat hidden"}>
           <div className="right">
             <div className="top">
               <span>
@@ -289,11 +389,21 @@ const Chat = (props) => {
                 type="text"
                 id="input-value"
                 onKeyDown={(event) => confirm(event)}
+                onFocus={(event) => onFocuser(event)}
                 className="form-control"
                 placeholder={t("chat.placeholder")}
+                defaultValue=""
               ></textarea>
-
-              <a href="#" className="write-link smiley">
+              <div className="emoji">
+                {showEmoji && (
+                  <Picker onSelect={handleEmojiSelect} emojiSize={20} />
+                )}
+              </div>
+              <a
+                href="#"
+                className="write-link smiley"
+                onClick={(e) => onClickEmoji(e)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100"

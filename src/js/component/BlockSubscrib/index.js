@@ -5,19 +5,17 @@ import {
   useGoogleReCaptcha,
   GoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import Modal from "../Modal";
 
 const Blocksubscribe = (props) => {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const [isErrorEmail, setIsErrorEmail] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [token, setToken] = useState();
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const onSubmitSend = (e, form) => {
     e.preventDefault();
-    console.log(e);
-    let value = e.target[2].value,
-      email = e.target[1].value;
+    let email = e.target[0].value;
     if (email.indexOf(".") === -1) {
       setIsErrorEmail(true);
       setErrorMessage(t("forms.formPlan.errorEmail"));
@@ -29,6 +27,8 @@ const Blocksubscribe = (props) => {
       data.append("_token", "");
       data.append("token", token);
       data.append("subscribed", true);
+      data.append("lang", i18n.language);
+      data.append("email", document.querySelector('input[name="email"]').value);
       data = props.send(data);
       return;
     }
@@ -43,7 +43,7 @@ const Blocksubscribe = (props) => {
               <p>{t("subscribe.description")}</p>
             </div>
             <form onSubmit={(e) => onSubmitSend(e, this)} className="ni-form">
-              <input type="email" placeholder={t("subscribe.youemail")} />
+              <input type="email" name="email" placeholder={t("subscribe.youemail")} />
               <GoogleReCaptchaProvider
                 reCaptchaKey="6LdZ5cceAAAAANlRyAE5m-6KQ6rfdmZqBGIqei2t"
                 scriptProps={{
@@ -101,14 +101,6 @@ const Blocksubscribe = (props) => {
           </div>
         </div>
       </section>
-
-      <Modal
-        dataLwo={props.dataLwo}
-        form="info"
-        active={props.active}
-        closer={(e) => props.closer(e)}
-        send={(data) => props.send(data)}
-      />
     </>
   );
 };

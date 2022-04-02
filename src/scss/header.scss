@@ -1,4 +1,4 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
+@import 'bootstrap/dist/css/bootstrap.min.css';
 html {
   max-width: 1920px;
 
@@ -58,7 +58,7 @@ html {
   }
 }
 .icon_check {
-  background-image: url("../img/accept.png");
+  background-image: url('../img/accept.png');
   background-repeat: no-repeat;
   display: block;
   padding-right: 32px;
@@ -70,7 +70,7 @@ html {
   right: 74%;
   z-index: 0;
   &::after {
-    content: "";
+    content: '';
     border-bottom: 1px solid #0000001b;
     width: 82%;
     display: flex;
@@ -163,7 +163,7 @@ html {
 }
 
 #large-header {
-  background-image: url("https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/img/demo-1-bg.jpg");
+  background-image: url('https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/img/demo-1-bg.jpg');
 }
 
 .main-title {
@@ -469,47 +469,120 @@ html {
   justify-content: space-between;
   height: 100%;
 }
-input[type="range"] {
+input[type='range'] {
   overflow: hidden;
   -webkit-appearance: none;
 }
 
-input[type="range"]::-webkit-slider-runnable-track {
+input[type='range']::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   color: #13bba4;
   margin-top: -1px;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   cursor: ew-resize;
   background: #ee8425;
 }
 
-input[type="range"]::-moz-range-progress {
+input[type='range']::-moz-range-progress {
   background-color: #43e5f7;
 }
-input[type="range"]::-moz-range-track {
+input[type='range']::-moz-range-track {
   background-color: #9a905d;
 }
-input[type="range"]::-ms-fill-lower {
+input[type='range']::-ms-fill-lower {
   background-color: #43e5f7;
 }
-input[type="range"]::-ms-fill-upper {
+input[type='range']::-ms-fill-upper {
   background-color: #9a905d;
 }
 //Chat
-.left {
-  max-width: 200px;
+@keyframes lodasc1 {
+  0% {
+    height: 0vh;
+  }
+  20% {
+    height: 5vh;
+  }
+  40% {
+    height: 10vh;
+  }
+  60% {
+    height: 15vh;
+  }
+  80% {
+    height: 20vh;
+  }
+  100% {
+    height: 22vh;
+  }
+}
+.nity {
   position: fixed;
-  top:15%;
-  left: -7.5%;
-  background-image: linear-gradient(to right, #ee8425 0%, #f9488b 100%), linear-gradient(to right, #ee8425 0%, #f9488b 100%);
+  max-width: 2px;
   width: 100%;
+  height: 0vh;
+  background-image: linear-gradient(to right, #ee8425 0%, #f9488b 100%),
+    linear-gradient(to right, #ee8425 0%, #f9488b 100%);
+  left: 5.2%;
+  top: 0%;
+
+  &.active {
+    height: 22vh;
+
+    animation-name: lodasc1;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+  }
+}
+@keyframes lodasc {
+  0% {
+    top: 0;
+    transform: rotate(360deg);
+  }
+  20% {
+    top: 5%;
+  }
+  40% {
+    top: 10%;
+  }
+  60% {
+    top: 15%;
+  }
+  80% {
+    top: 20%;
+  }
+  100% {
+    top: 22%;
+    transform: rotate(270deg);
+  }
+}
+.left {
+  position: fixed;
+  max-height: 25px;
+  top: 0%;
+  transform: rotate(360deg);
+  left: 0;
+  background-image: linear-gradient(to right, #ee8425 0%, #f9488b 100%),
+    linear-gradient(to right, #ee8425 0%, #f9488b 100%);
   border: 1px solid transparent;
   border-radius: 8px;
-  color:rgb(255, 255, 255);
-  transform: rotate(270deg);
-  .top{
+  color: white;
+  max-width: 200px;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: end;
+
+  cursor: pointer;
+  &.active {
+    top: 22%;
+    transform: rotate(360deg);
+    transition: all 0.5s linear;
+  }
+  .top {
     padding-left: 15px;
   }
 }
@@ -518,19 +591,25 @@ input[type="range"]::-ms-fill-upper {
   height: 0;
   max-width: 0;
   transition: all 0.5s linear;
-
+  visibility: hidden;
+  opacity: 0;
   &.active {
+    visibility: visible;
+    opacity: 1;
     width: 100%;
+    left: 0%;
+    top: 30%;
     height: 100%;
-    max-width: 100%;
+    max-width: 370px;
+
     transition: all 0.5s linear;
   }
 
   .signIn {
     padding: 25px;
     position: absolute;
-    left: -20em;
-    max-width: 480px;
+    left: 0em;
+    max-width: 300px;
     max-height: 170px;
     width: 100%;
     height: 100%;
@@ -539,11 +618,18 @@ input[type="range"]::-ms-fill-upper {
     z-index: 10;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    transition: all 0.5s linear;
+
     &.active {
       width: 100%;
       transition: all 0.5s linear;
     }
-    div.input {
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+    div.infas {
       margin: 0 10px;
       margin-bottom: 25px;
     }
@@ -553,8 +639,10 @@ input[type="range"]::-ms-fill-upper {
     }
   }
   .chat {
-    visibility: hidden;
-    opacity: 0;
+    visibility: visible;
+    opacity: 1;
+    position: absolute;
+    left: 0;
     display: flex;
     min-height: 300px;
     height: 100%;
@@ -564,10 +652,12 @@ input[type="range"]::-ms-fill-upper {
       opacity: 1;
       transition: all 0.5s linear;
     }
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
     .people {
       max-width: 300px;
-      max-height: 400px;
-      height: 100%;
       overflow: hidden;
       overflow-y: auto;
       &:hover .person {
@@ -610,6 +700,17 @@ input[type="range"]::-ms-fill-upper {
         border: 1px solid #ee8425;
         border-radius: 0 0 8px 8px;
         max-width: 650px;
+        .emoji {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          .emoji-mart-category-list li {
+            cursor: pointer;
+          }
+          .emoji-mart-category .emoji-mart-emoji span {
+            cursor: pointer;
+          }
+        }
         .form-control {
           &.error {
             border: 1px solid #f44949;
@@ -661,6 +762,7 @@ input[type="range"]::-ms-fill-upper {
           width: 100%;
           &.disabled-link {
             pointer-events: none;
+            background_color: #c1c1c1;
           }
           &.send {
             object-fit: cover;
@@ -751,7 +853,7 @@ input[type="range"]::-ms-fill-upper {
           justify-content: flex-end;
           .me {
             margin-right: 1em;
-            max-width: 300px;
+            max-width: 100px;
             width: 100%;
             color: darkcyan;
             overflow: auto;

@@ -14,7 +14,7 @@ import imagess from "./images";
 import Block from "../Block";
 import Modal from "../Modal";
 import Loader from "../Loader";
-import Chat from "../Chat";
+// import Chat from "../Chat";
 const BlockNews = React.lazy(() => import("../BlockNews"));
 const BlockNext = React.lazy(() => import("../BlockNext"));
 const BlockAbout = React.lazy(() => import("../BlockAbout"));
@@ -26,7 +26,6 @@ const Content = (props) => {
   const [isOpenTooltip, setIsOpenTooltip] = useState(false);
   const [isOpenSrc, setIsOpenSrc] = useState(false);
   const [openSrc, setOpenSrc] = useState(false);
-  const [active, setActive] = useState(false);
   const [dataLwo, setDataLwo] = useState("");
   const [timerStop, setTimerStop] = useState(() => {});
   const item = useRef();
@@ -63,10 +62,10 @@ const Content = (props) => {
     item.preventDefault();
     document.querySelector("html").style.overflow = "hidden";
 
-    setActive(activate);
+    props.setActive(activate);
   };
   const closeModal = (e) => {
-    setActive(e);
+    props.setActive(e);
     document.querySelector("html").style.overflow = "auto";
   };
   const sendMassege = (data) => {
@@ -75,7 +74,7 @@ const Content = (props) => {
     props.pageActions.sendForm(data).then((e) => {
       setDataLwo(e);
       if (e.status.success) {
-        setActive(false);
+        props.setActive(false);
         setDataLwo(false);
 
         document.querySelector("form.needs-validation").reset();
@@ -84,7 +83,6 @@ const Content = (props) => {
     });
   };
   useEffect(() => {
-
     window.addEventListener("scroll", function () {
       Visible(item.current);
     });
@@ -206,7 +204,7 @@ const Content = (props) => {
           </div>
         </div>
       </section>
-      {props.projects.data && (<Chat infoUser={props.infoUser} takeIp={() => props.pageActions.takeIp()} />)}
+      {/* {props.projects.data && (<Chat infoUser={props.infoUser} takeIp={() => props.pageActions.takeIp()} />)} */}
       <Block props={props} />
       <Suspense fallback={<Loader />}>
         {props.projects.data && (
@@ -238,7 +236,7 @@ const Content = (props) => {
       >
         <Modal
           dataLwo={dataLwo}
-          active={active}
+          active={props.active}
           closer={(e) => closeModal(e)}
           send={(data) => sendMassege(data)}
           data={dataLwo.status}
@@ -252,7 +250,7 @@ const Content = (props) => {
         <BlockSubscrib
           images={images}
           send={(data) => sendMassege(data)}
-          active={active}
+          active={props.active}
           closer={(e) => closeModal(e)}
           dataLwo={dataLwo}
         />

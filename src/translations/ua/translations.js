@@ -15,7 +15,8 @@ export const TRANSLATIONS_UA = {
       "Опис проектів над якими працював.\n Всі проекти без доданого посилання, є код для ознакомлення.",
   },
   timers: {
-    title: "Час вказаний на табло вимірює присутність Адміністрації сайту. \nДля зв'язку з розробником внизу є таблиця ",
+    title:
+      "Час вказаний на табло вимірює присутність Адміністрації сайту. \nДля зв'язку з розробником внизу є таблиця ",
     description: "До закінчення робочого дня!",
     day0: "день",
     day1: "дня",
@@ -55,7 +56,7 @@ export const TRANSLATIONS_UA = {
       schedule: "Розклад",
       blog: "Блог",
       contacts: "Контакти",
-      button: "Замовити сайт"
+      button: "Замовити сайт",
     },
   },
   worksheet: {
@@ -153,38 +154,42 @@ export const TRANSLATIONS_UA = {
       agree: "Погоджуєтесь з правилами ...",
       submit: "Зберегти",
       max: "Бюджет до:",
-    }
+    },
   },
   news: {
     title: "Останні новини",
-    description: "Всі останні новини в одному блоці."
+    description: "Всі останні новини в одному блоці.",
   },
   subscribe: {
     title: "Підписка на новини",
-    description: "Тут Ви даєте згоду на розсилку новин на Вашу електронну пошту.",
+    description:
+      "Тут Ви даєте згоду на розсилку новин на Вашу електронну пошту.",
     button: "Підписатись",
-    youemail:'Ваша електронна пошта',
+    youemail: "Ваша електронна пошта",
     location: {
-      title: 'Місце положення',
-      description: 'Місце положення нашого офісу',
-      addresTitle: '',
-      adress: '',
-      phoneTitle: '',
-      phone: '',
-      emailTitle: '',
-      email: '',
-      websiteTitle: '',
-      website: '',
-    }
+      title: "Місце положення",
+      description: "Місце положення нашого офісу",
+      addresTitle: "",
+      adress: "",
+      phoneTitle: "",
+      phone: "",
+      emailTitle: "",
+      email: "",
+      websiteTitle: "",
+      website: "",
+    },
   },
   chat: {
+    peopleIn: "Людей онлайн: ",
+    person: " осіб",
     title: "Чатик",
     description: "Чат для спілкування",
     errorTextarea: "Посилання не доступні в чаті",
     errorTooLongTextarea: "Дуже довге повідомлення",
-    send: 'Відправити',
+    send: "Відправити",
     placeholder: "Введіть текст ...",
-    login: "Введіть логін для входу"
-  }
+    login: "Введіть логін для входу",
+    errorName: "Не можна відправити пусте ім`я",
+    errorTextareaLength: "Не менше двох символів",
+  },
 };
-
