@@ -16,4 +16,4 @@ RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 EXPOSE 8000
 # start app
-CMD ["npm", "start"]
+CMD ["npm","run", "build"]
